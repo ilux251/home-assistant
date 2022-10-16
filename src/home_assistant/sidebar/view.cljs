@@ -48,9 +48,11 @@
             hours (set-zero-if-needed (:hours time))
             minutes (set-zero-if-needed (:minutes time))
             seconds (set-zero-if-needed (:seconds time))]
-        [:<>
-         [:h2 (str hours ":" minutes ":" seconds)]
-         [:h3 (str (get-day (:day time)) " 16 " (get-month (:month time)))]]))}))
+        
+         (when time
+           [:<>
+            [:h2 (str hours ":" minutes ":" seconds)]
+            [:h3 (str (get-day (:day time)) " 16 " (get-month (:month time)))]])))}))
 
 (defn view
   []
