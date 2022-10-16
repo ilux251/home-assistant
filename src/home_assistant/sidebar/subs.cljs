@@ -5,3 +5,8 @@
  ::current-time
  (fn [db]
    (:date db)))
+
+(rf/reg-sub
+ ::get-weather-data
+ (fn [db]
+   (get-in db [:weather :data] {})))

@@ -2,15 +2,13 @@
   (:require
    [re-frame.core :as rf]
    [home-assistant.subs :as subs]
-   [home-assistant.events :as events]
    [home-assistant.task.view :as task-view]
    [home-assistant.sidebar.view :as sidebar-view]
    ))
 
 (defn dashboard
   []
-  [:<>
-   [:button {:on-click #(rf/dispatch [::events/change-view :to-do])} "To-do"]])
+  [:h1 "Dashboard"])
 
 (defn main-panel []
   (let [current-view (rf/subscribe [::subs/current-view])]

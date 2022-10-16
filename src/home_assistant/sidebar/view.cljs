@@ -45,6 +45,7 @@
     :render
     (fn []
       (let [time @(rf/subscribe [::sub/current-time])
+            date (set-zero-if-needed (:date time))
             hours (set-zero-if-needed (:hours time))
             minutes (set-zero-if-needed (:minutes time))
             seconds (set-zero-if-needed (:seconds time))]
@@ -52,9 +53,21 @@
          (when time
            [:<>
             [:h2 (str hours ":" minutes ":" seconds)]
-            [:h3 (str (get-day (:day time)) " 16 " (get-month (:month time)))]])))}))
+            [:h3 (str (get-day (:day time)) " " date " " (get-month (:month time)))]])))}))
+
+(defn- weather-view
+  []
+  (reagent/create-class
+   {:component-did-mount (fn [] (rf/dispatch [::evt/get-weather-data]))
+    
+    :render
+    (fn []
+      (let [weather-data @(rf/subscribe [::sub/get-weather-data])]
+        (println weather-data)
+        [:h3 "Wetter"]))}))
 
 (defn view
   []
   [:div.sidebar
-   [time-view]])
+   [time-view]
+   [weather-view]])
