@@ -4,7 +4,7 @@
 (rf/reg-sub
  ::current-time
  (fn [db]
-   (:date db)))
+   (:time db)))
 
 (rf/reg-sub
  ::get-weather-data
