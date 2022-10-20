@@ -9,12 +9,12 @@
  :set-time
  (fn [coeffects _]
    (let [date (js/Date.)]
-    (assoc coeffects :time {:hours (.getHours date)
-                            :minutes (.getMinutes date)
-                            :seconds (.getSeconds date)
-                            :month (.getMonth date)
-                            :date (.getDate date)
-                            :day (.getDay date)}))))
+    (-> (assoc coeffects :time {:hours (.getHours date)
+                                :minutes (.getMinutes date)
+                                :seconds (.getSeconds date)
+                                :month (.getMonth date)
+                                :date (.getDate date)
+                                :day (.getDay date)})))))
 
 (rf/reg-event-fx
  ::update-time
@@ -22,28 +22,40 @@
  (fn [{:keys [db time]} _]
    {:db (assoc db :time time)}))
 
-(defn- times-to-hour-and-date
+(defn- times-to-hours
   [times]
-  (map #(let [time (js/Date. %)
-              hours (.getHours time)
-              date (.getDate time)]
-          {:hours hours
-           :date date}) times))
+  (map #(.getHours (js/Date. %)) times))
+
+(defn- map-hourly-weather-data
+  [weather-data]
+  (let [time-count 48
+        weather-hourly-time (get-in weather-data [:hourly :time])
+        weather-hourly-weathercodes (get-in weather-data [:hourly :weathercode])
+        weather-hourly-temperature (get-in weather-data [:hourly :temperature_2m])
+        weather-hourly-hours (times-to-hours weather-hourly-time)]
+    (for [idx (range time-count)]
+      {:weathercode (nth weather-hourly-weathercodes idx)
+       :hour (nth weather-hourly-hours idx)
+       :temperature (nth weather-hourly-temperature idx)})))
+
+(defn- map-daily-weather-data
+  [weather-data]
+  (let [time-count 4
+        weather-daily-time (rest (get-in weather-data [:daily :time]))
+        weather-daily-weathercodes (rest (get-in weather-data [:daily :weathercode]))
+        weather-daily-temperature-min (rest (get-in weather-data [:daily :temperature_2m_min]))
+        weather-daily-temperature-max (rest (get-in weather-data [:daily :temperature_2m_max]))
+        weather-daily-weekdays (ud/times-to-day weather-daily-time)]
+    (for [idx (range time-count)]
+      {:weathercode (nth weather-daily-weathercodes idx)
+       :weekday (nth weather-daily-weekdays idx)
+       :temperature-min (nth weather-daily-temperature-min idx)
+       :temperature-max (nth weather-daily-temperature-max idx)})))
 
 (defn- extract-weather-data
   [data]
-  (let [days-count 4
-        weather-today-time (take (* 24 2) (get-in data [:hourly :time]))
-        weather-days-time (take days-count (rest (get-in data [:daily :time])))]
-    {:hourly {:weathercode (take (count weather-today-time) (get-in data [:hourly :weathercode]))
-              :time weather-today-time
-              :hour-and-date (times-to-hour-and-date weather-today-time)
-              :temperature (take (count weather-today-time) (get-in data [:hourly :temperature_2m]))}
-     :days {:weather-code (take days-count (rest (get-in data [:daily :weathercode])))
-            :time weather-days-time
-            :weekdays (ud/times-to-day weather-days-time)
-            :temperature-min (take days-count (rest (get-in data [:daily :temperature_2m_min])))
-            :temperature-max (take days-count (rest (get-in data [:daily :temperature_2m_max])))}}))
+  {:hourly (map-hourly-weather-data data)
+   :days (map-daily-weather-data data)})
 
 (rf/reg-event-fx
  :success-handler

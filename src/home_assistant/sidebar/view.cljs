@@ -30,9 +30,23 @@
     
     :render
     (fn []
-      (let [weather-data @(rf/subscribe [::sub/get-weather-data])]
-        (println weather-data)
-        [:h3 "Wetter"]))}))
+      (let [weather-data @(rf/subscribe [::sub/get-weather-data])
+            current-hours @(rf/subscribe [::sub/current-hours])
+            weather-data-hourly (take 4 (nthnext (:hourly weather-data) current-hours))
+            weather-data-days (:days weather-data)]
+        [:<>
+         [:h3 "Wetter"]
+         [:div.currrent-day
+          (map-indexed (fn [idx hours]
+                         (if (= idx 0)
+                           [:span.current (:temperature hours)]
+                           [:span (:temperature hours)])) weather-data-hourly)]
+         [:div.days
+          (map (fn [day]
+                 [:<>
+                  [:div
+                   [:span.min (:temperature-min day)]
+                   [:span.max (:temperature-max day)] (:weekday day)]]) weather-data-days)]]))}))
 
 (defn view
   []
