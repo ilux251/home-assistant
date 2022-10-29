@@ -39,14 +39,14 @@
          [:div.currrent-day
           (map-indexed (fn [idx hours]
                          (if (= idx 0)
-                           [:span.current (:temperature hours)]
-                           [:span (:temperature hours)])) weather-data-hourly)]
+                           [:span.current (Math/round (:temperature hours))]
+                           [:span (Math/round (:temperature hours))])) weather-data-hourly)]
          [:div.days
           (map (fn [day]
                  [:<>
                   [:div
-                   [:span.min (:temperature-min day)]
-                   [:span.max (:temperature-max day)] (:weekday day)]]) weather-data-days)]]))}))
+                   [:span.min (Math/round (:temperature-min day))]
+                   [:span.max (Math/round (:temperature-max day))] (:weekday day)]]) weather-data-days)]]))}))
 
 (defn view
   []
