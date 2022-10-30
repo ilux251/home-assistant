@@ -1,10 +1,10 @@
-(ns home-assistant.core
+(ns home-assistant.frontend.core
   (:require
    [reagent.dom :as rdom]
    [re-frame.core :as re-frame]
-   [home-assistant.events :as events]
-   [home-assistant.views :as views]
-   [home-assistant.config :as config]
+   [home-assistant.frontend.events :as events]
+   [home-assistant.frontend.views :as views]
+   [home-assistant.frontend.config :as config]
    ))
 
 

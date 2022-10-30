@@ -1,9 +1,9 @@
-(ns home-assistant.sidebar.events
+(ns home-assistant.frontend.sidebar.events
   (:require [re-frame.core :as rf]
             [ajax.core :as ajax]
             [day8.re-frame.http-fx]
             
-            [home-assistant.util.date :as ud]))
+            [home-assistant.frontend.util.date :as ud]))
 
 (rf/reg-cofx
  :set-time

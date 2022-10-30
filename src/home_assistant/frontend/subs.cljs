@@ -1,4 +1,4 @@
-(ns home-assistant.subs
+(ns home-assistant.frontend.subs
   (:require
    [re-frame.core :as rf]))
 

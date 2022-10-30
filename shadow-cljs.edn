@@ -1,7 +1,5 @@
 {:nrepl {:port 8777}
-
  
-
  :source-paths ["src" "test"]
 
  :dependencies
@@ -22,7 +20,7 @@
    :output-dir "resources/public/js/compiled"
    :asset-path "/js/compiled"
    :modules
-   {:app {:init-fn home-assistant.core/init}}
+   {:app {:init-fn home-assistant.frontend.core/init}}
    :devtools
    {:preloads []}
    :dev

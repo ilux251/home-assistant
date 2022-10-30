@@ -1,9 +1,9 @@
-(ns home-assistant.sidebar.view
+(ns home-assistant.frontend.sidebar.view
   (:require [re-frame.core :as rf]
             [reagent.core :as reagent]
-            [home-assistant.sidebar.events :as evt]
-            [home-assistant.sidebar.subs :as sub]
-            [home-assistant.util.date :as ud]))
+            [home-assistant.frontend.sidebar.events :as evt]
+            [home-assistant.frontend.sidebar.subs :as sub]
+            [home-assistant.frontend.util.date :as ud]))
 
 (defn- time-view
   []

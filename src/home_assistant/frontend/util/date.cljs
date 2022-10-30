@@ -1,4 +1,4 @@
-(ns home-assistant.util.date)
+(ns home-assistant.frontend.util.date)
 
 (defn set-zero-if-needed
   [number]

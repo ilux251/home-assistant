@@ -1,4 +1,4 @@
-(ns home-assistant.db)
+(ns home-assistant.frontend.db)
 
 (def default-db
   {:name "Home Assistant"
