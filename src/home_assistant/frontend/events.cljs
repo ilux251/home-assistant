@@ -6,10 +6,16 @@
    [day8.re-frame.http-fx]
    [ajax.core :as ajax]))
 
-(rf/reg-event-db
+(rf/reg-cofx
+ :initialize-tasks
+ (fn []
+   (rf/dispatch [::get-tasks])))
+
+(rf/reg-event-fx
  ::initialize-db
- (fn [_ _]
-   db/default-db))
+ #_[(rf/inject-cofx :initialize-tasks)]
+ (fn [{:keys [db]} _]
+   {:db db/default-db}))
 
 (rf/reg-event-db
  ::change-view
@@ -18,9 +24,8 @@
 
 (rf/reg-event-db
  :success
- (fn [db [_ data]]
-   (println data)
-   db))
+ (fn [db [_ path data]]
+   (assoc-in db path data)))
 
 (rf/reg-event-db
  :failure
@@ -29,14 +34,14 @@
    db))
 
 (rf/reg-event-fx
- ::get-server-data
- (fn [{:keys [db]} _]
+ ::get-tasks
+ (fn [_ _]
    {:http-xhrio {:method :get
-                 :uri "http://localhost:8000/data"
+                 :uri "http://localhost:8000/get-tasks"
                  :timeout 5000
                  :format (ajax/json-request-format)
                  :response-format (ajax/json-response-format {:keywords? true})
-                 :on-success [:success]
+                 :on-success [:success [:task :tasks]]
                  :on-failure [:failure]}}))
 
 (rf/reg-event-fx

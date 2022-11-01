@@ -5,13 +5,15 @@
    [compojure.core :refer [defroutes GET POST routes]]
    [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
    [ring.middleware.json :refer [wrap-json-response wrap-json-params]]
-   [ring.middleware.params :refer [wrap-params]]))
+   [ring.middleware.params :refer [wrap-params]]
+
+   [home-assistant.backend.sql.task :as sql-task]))
 
 
 (defroutes api-routes
-  (GET "/data" []
+  (GET "/get-tasks" []
     {:status 200
-     :body {:data "server data"}})
+     :body (sql-task/get-all-tasks)})
   (POST "/auth" req
     (let [params (:params req)
           user (:user params)
