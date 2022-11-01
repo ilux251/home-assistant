@@ -3,7 +3,8 @@
    [re-frame.core :as rf]
    [home-assistant.frontend.subs :as subs]
    [home-assistant.frontend.task.view :as task-view]
-   [home-assistant.frontend.sidebar.view :as sidebar-view]))
+   [home-assistant.frontend.sidebar.view :as sidebar-view]
+   [home-assistant.frontend.task.events :as task-events]))
 
 (defn dashboard
   []
@@ -13,7 +14,9 @@
      [:div
       (map (fn [task]
              ^{:key (:id task)}
-             [:div (:summary task)]) tasks-without-subtask)]]))
+             [:div 
+              {:on-click #(rf/dispatch [::task-events/select-task (:id task)])} 
+              (:summary task)]) tasks-without-subtask)]]))
 
 (defn main-panel []
   (let [current-view (rf/subscribe [::subs/current-view])]
@@ -22,4 +25,4 @@
      [:div
       (case @current-view
         :dashboard [dashboard]
-        :to-do [task-view/view])]]))
+        :task [task-view/view])]]))

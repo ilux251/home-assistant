@@ -6,15 +6,10 @@
    [day8.re-frame.http-fx]
    [ajax.core :as ajax]))
 
-(rf/reg-cofx
- :initialize-tasks
- (fn []
-   (rf/dispatch [::get-tasks])))
-
 (rf/reg-event-fx
  ::initialize-db
- #_[(rf/inject-cofx :initialize-tasks)]
- (fn [{:keys [db]} _]
+ (fn [_ _]
+   (rf/dispatch [::get-tasks])
    {:db db/default-db}))
 
 (rf/reg-event-db
