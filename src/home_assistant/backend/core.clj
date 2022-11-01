@@ -1,41 +1,26 @@
 (ns home-assistant.backend.core
   (:require [ring.adapter.jetty :as j]
-            [ring.middleware.resource :refer [wrap-resource]]
-            [ring.util.response :refer [resource-response]]
-            [compojure.core :refer [defroutes GET POST routes]]
-            [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
-            [ring.middleware.json :refer [wrap-json-response wrap-json-params]]
-            [ring.middleware.params :refer [wrap-params]])
+            [ring.middleware.reload :refer [wrap-reload]]
+
+            [home-assistant.backend.handler :as handler])
   (:gen-class))
 
-(defroutes api-routes
-  (GET "/data" []
-    {:status 200
-     :body {:data "Server data"}})
-  (POST "/auth" req
-    (let [params (:params req)
-          user (:user params)
-          password (:password params)]
-      {:status 200
-       :body {:user user :password password}})))
+(defonce server (atom nil))
 
-(defroutes resource-routes
-  (GET "/" []
-    (resource-response "public/index.html")))
+(defn start
+  []
+  (if (:app @server)
+    (.start (:app @server))
+    (swap! server assoc :app (j/run-jetty (wrap-reload #'handler/app) {:port 8000 :join? false}))))
 
-(def app
-  (routes
-   (-> resource-routes
-       (wrap-resource "public"))
-   (-> api-routes
-       (wrap-defaults api-defaults)
-       wrap-params
-       wrap-json-params
-       wrap-json-response)))
+(defn stop
+  []
+  (.stop (:app @server)))
 
-(def server
-  (j/run-jetty app {:port 8000 :join? false}))
-
-(defn- main
+(defn -dev-main
   [& args]
-  (server))
+  (start))
+
+(defn -main
+  [& args]
+  (j/run-jetty handler/app {:port 8000}))
