@@ -12,16 +12,12 @@
 
     :render
     (fn []
-      (let [time @(rf/subscribe [::sub/current-time])
-            date (ud/set-zero-if-needed (:date time))
-            hours (ud/set-zero-if-needed (:hours time))
-            minutes (ud/set-zero-if-needed (:minutes time))
-            seconds (ud/set-zero-if-needed (:seconds time))]
+      (let [time @(rf/subscribe [::sub/current-time])]
         
          (when time
            [:<>
-            [:h2 (str hours ":" minutes ":" seconds)]
-            [:h3 (str (ud/get-day (:day time)) " " date " " (ud/get-month (:month time)))]])))}))
+            [:h2 (ud/time-to-string time)]
+            [:h3 (ud/date-to-string time)]])))}))
 
 (defn- weather-view
   []

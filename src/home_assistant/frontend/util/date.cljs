@@ -39,3 +39,35 @@
             js/Date.
             .getDay
             get-day) times))
+
+(defn get-date
+  [date]
+  (js/Date. (str (.getFullYear date) "-" 
+                 (set-zero-if-needed (.getMonth date)) "-" 
+                 (set-zero-if-needed (.getDate date)))))
+
+(defn is-date-today
+  [date]
+  (let [date-today-a (get-date (js/Date.))
+        date-today-b (get-date (js/Date. date))]
+    (= date-today-a date-today-b)))
+
+(defn time-to-string
+  [time]
+  (let [hours (set-zero-if-needed (:hours time))
+        minutes (set-zero-if-needed (:minutes time))]
+    (str hours ":" minutes)))
+
+(defn date-to-string
+  [time]
+  (let [date (set-zero-if-needed (:date time))]
+    (str (get-day (:day time)) " " date " " (get-month (:month time)))))
+
+(defn date-to-map
+  [time]
+  {:hours (.getHours time)
+   :minutes (.getMinutes time)
+   :seconds (.getSeconds time)
+   :month (.getMonth time)
+   :date (.getDate time)
+   :day (.getDay time)})

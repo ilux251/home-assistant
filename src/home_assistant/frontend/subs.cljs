@@ -11,8 +11,3 @@
  ::current-view
  (fn [db]
    (:current-view db)))
-
-(rf/reg-sub
- ::tasks
- (fn [db]
-   (get-in db [:task :tasks])))

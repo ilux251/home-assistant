@@ -9,12 +9,7 @@
  :set-time
  (fn [coeffects _]
    (let [date (js/Date.)]
-    (-> (assoc coeffects :time {:hours (.getHours date)
-                                :minutes (.getMinutes date)
-                                :seconds (.getSeconds date)
-                                :month (.getMonth date)
-                                :date (.getDate date)
-                                :day (.getDay date)})))))
+    (-> (assoc coeffects :time (ud/date-to-map date))))))
 
 (rf/reg-event-fx
  ::update-time
