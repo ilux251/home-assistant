@@ -13,25 +13,27 @@
 
 (defn tasks-view
   [tasks]
-  (map (fn [task]
-         (let [time (js/Date. (:date task))
-               time-map (ud/date-to-map time)]
-          ^{:key (:id task)}
+  (map (fn [{:keys [id summary date] :as task}]
+         (let [time (when date (js/Date. date))
+               time-map (when time (ud/date-to-map time))]
+          ^{:key id}
           [:div
            [:div
-            {:on-click #(rf/dispatch [::task-events/select-task (:id task)])
+            {:on-click #(rf/dispatch [::task-events/select-task id])
              :class (status task)}
-            (:summary task)]
-           [:div
-            [:span.date (ud/date-to-string time-map)]
-            [:span.time (ud/time-to-string time-map)]]])) tasks))
+            summary]
+           (when time
+             [:div
+              [:span.date (ud/date-to-string time-map)]
+              [:span.time (ud/time-to-string time-map)]])])) tasks))
 
 (defn view 
   []
   (let [{:keys [selected-task subtasks]} @(rf/subscribe [::task-subs/selected-task])]
-    [:<> 
+    [:div.task-view 
      [:h2 (:summary selected-task)]
-     [:button {:on-click #(rf/dispatch [::events/change-view :dashboard])} "Zurück"]
+     [:button {:class "back"
+               :on-click #(rf/dispatch [::events/change-view :dashboard])} "Zurück"]
      [:div
       (map (fn [subtask]
              ^{:key (:id subtask)}
