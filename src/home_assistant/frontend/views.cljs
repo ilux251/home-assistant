@@ -10,21 +10,33 @@
   [tasks]
   (filter #(nil? (:subtaskid %)) tasks))
 
+(defn- dashboard-task-view
+  [tasks]
+  [:<>
+   (if (> (count tasks) 0)
+     (task-view/tasks-view tasks)
+     [:div "Keine Aufgaben"])])
+
 (defn tasks-today
   []
   (let [tasks @(rf/subscribe [::task-subs/tasks-today])
         tasks-without-subtask (without-subtasks tasks)]
-    [:div.tasks-today (task-view/tasks-view tasks-without-subtask)]))
+    [:div.tasks-today 
+     [:h3 "Heute"]
+     [dashboard-task-view tasks-without-subtask]]))
 
 (defn tasks-soon
   []
   (let [tasks @(rf/subscribe [::task-subs/tasks-soon])
         tasks-without-subtask (without-subtasks tasks)]
-    [:div.tasks-soon (task-view/tasks-view tasks-without-subtask)]))
+    [:div.tasks-soon 
+     [:h3 "Später"]
+     [dashboard-task-view tasks-without-subtask]]))
 
 (defn dashboard
   []
   [:div.tasks
+   [:h2 "Tasks"]
    [tasks-today]
    [tasks-soon]])
 

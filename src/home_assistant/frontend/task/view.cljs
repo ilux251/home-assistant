@@ -28,8 +28,7 @@
 
 (defn view 
   []
-  (let [{:keys [selected-task subtasks] :as task} @(rf/subscribe [::task-subs/selected-task])]
-    (println task)
+  (let [{:keys [selected-task subtasks]} @(rf/subscribe [::task-subs/selected-task])]
     [:<> 
      [:h2 (:summary selected-task)]
      [:button {:on-click #(rf/dispatch [::events/change-view :dashboard])} "Zurück"]

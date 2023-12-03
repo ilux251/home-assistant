@@ -21,11 +21,16 @@
    (filter #(> (js/Date. (:date %)) (js/Date.)) tasks)))
 
 (rf/reg-sub
- ::selected-task
+ ::selected-taskid
  (fn [db]
-   (let [tasks (get-in db [:task :tasks])
-         selected-taskid (get-in db [:task :selected-id])
-         selected-task (first (filter #(= (:id %) selected-taskid) tasks))
+   (get-in db [:task :selected-id])))
+
+(rf/reg-sub
+ ::selected-task
+ :<- [::tasks]
+ :<- [::selected-taskid]
+ (fn [[tasks selected-taskid] _]
+   (let [selected-task (first (filter #(= (:id %) selected-taskid) tasks))
          subtasks (filter #(= (:subtaskid %) selected-taskid) tasks)]
      {:selected-task selected-task
       :subtasks subtasks})))

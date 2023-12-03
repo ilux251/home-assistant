@@ -1,9 +1,9 @@
 {:nrepl {:port 8777}
 
  :deps {:aliases [:cljs]}
-
+ 
  :dev-http
- {8280 "resources/public"
+ {8080 "resources/public"
   8290 "target/browser-test"}
  
  :builds
@@ -11,5 +11,11 @@
   {:target     :browser
    :output-dir "resources/public/js/compiled"
    :asset-path "/js/compiled"
+   :dev-http {8000 {:root    "resources/public"
+                    :watch   true
+                    :reload ["resources/public/css"]}}
    :modules {:app
-             {:init-fn home-assistant.frontend.core/init}}}}}
+             {:init-fn home-assistant.frontend.core/init}}
+   :release {:compiler-options {:optimizations :advanced}}}}
+ 
+ :release {:devtools false}}

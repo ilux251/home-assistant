@@ -7,10 +7,8 @@
   * Project Type "deps.edn + shadow-cljs" auswählen.
   * Mit dem Alias :cljs ausführen.
 * Server starten
-  * Über die PowerShell ausführen
-    ```
-    clj -X:run
-    ```
+  * home-assistant.backend.core/start
+  * Der Server liefer die von shadow-cljs compilierten Dateien unter ``resources/public/`` aus.
 
 ### Server
 * Mit der Middleware ```wrap-reload``` wird nach dem Speichern der *.clj Dateien automatisch deployt.
@@ -19,7 +17,7 @@
 ## Release
 JAR erstellen
 ```
-clj -X:uberjar :jar <filename>.jar
+lein uberjar
 ```
 JAR ausführen
 ```

@@ -3,8 +3,7 @@
    [home-assistant.frontend.events :as events]
 
    [re-frame.core :as rf]
-   [day8.re-frame.http-fx]
-   [ajax.core :as ajax]))
+   [day8.re-frame.http-fx]))
 
 (rf/reg-event-db
  ::select-task
