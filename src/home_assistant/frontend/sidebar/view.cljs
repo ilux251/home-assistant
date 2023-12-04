@@ -15,9 +15,9 @@
       (let [time @(rf/subscribe [::sub/current-time])]
         
          (when time
-           [:<>
-            [:h2 (ud/time-to-string time)]
-            [:h3 (ud/date-to-string time)]])))}))
+           [:div.datetime
+            [:span.time (ud/time-to-string time)]
+            [:span.date (ud/date-to-string time)]])))}))
 
 (defn- weather-view
   []
@@ -30,21 +30,24 @@
             current-hours @(rf/subscribe [::sub/current-hours])
             weather-data-hourly (take 4 (nthnext (:hourly weather-data) current-hours))
             weather-data-days (:days weather-data)]
-        [:<>
-         [:h3 "Wetter"]
-         [:div.currrent-day
-          (map-indexed (fn [idx hours]
-                         (if (= idx 0)
-                           ^{:key (str "weather-today-" idx)}
-                           [:span.current (Math/round (:temperature hours))]
-                           ^{:key (str "weather-today-" idx)}
-                           [:span (Math/round (:temperature hours))])) weather-data-hourly)]
+        [:div.wetter
+         [:div.today
+          [:h3 "Heute"]
+          [:div.current-day
+           (map-indexed (fn [idx hours]
+                          (if (= idx 0)
+                            ^{:key (str "weather-today-" idx)}
+                            [:span.current (Math/round (:temperature hours))]
+                            ^{:key (str "weather-today-" idx)}
+                            [:span (Math/round (:temperature hours))])) weather-data-hourly)]]
          [:div.days
           (map (fn [day]
                  ^{:key (str "weather-days-" day)}
                  [:div
-                  [:span.min (Math/round (:temperature-min day))]
-                  [:span.max (Math/round (:temperature-max day))] (:weekday day)]) weather-data-days)]]))}))
+                  [:span.day (:weekday day)]
+                  [:div.tempature
+                   [:span.min (Math/round (:temperature-min day))]
+                   [:span.max (Math/round (:temperature-max day))]]]) weather-data-days)]]))}))
 
 (defn view
   []

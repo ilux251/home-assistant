@@ -12,6 +12,8 @@
 
 ### Server
 * Mit der Middleware ```wrap-reload``` wird nach dem Speichern der *.clj Dateien automatisch deployt.
+* MySQL Server wird benötigt.
+  * Konfiguration unter ``backend/sql/db.clj``
 
 
 ## Release

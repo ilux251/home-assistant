@@ -36,13 +36,12 @@
 (defn dashboard
   []
   [:div.tasks
-   [:h2 "Tasks"]
    [tasks-today]
    [tasks-soon]])
 
 (defn main-panel []
   (let [current-view (rf/subscribe [::subs/current-view])]
-    [:<>
+    [:div.main {:class @current-view}
      [sidebar-view/view]
      (case @current-view
        :dashboard [dashboard]

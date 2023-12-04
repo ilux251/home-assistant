@@ -17,6 +17,17 @@
     5 "Freitag"
     6 "Samstag"))
 
+(defn get-day-short
+  [day-number]
+  (case day-number
+    0 "SO"
+    1 "MO"
+    2 "DI"
+    3 "MI"
+    4 "DO"
+    5 "FR"
+    6 "SA"))
+
 (defn get-month
   [month-number]
   (case month-number
@@ -38,7 +49,7 @@
   (map #(-> %
             js/Date.
             .getDay
-            get-day) times))
+            get-day-short) times))
 
 (defn get-date
   [date]
