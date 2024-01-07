@@ -13,7 +13,8 @@
  :<- [::tasks]
  (fn [tasks]
    (filter #(or (nil? (:date %))
-                (ud/is-date-today (:date %))) tasks)))
+                (ud/is-date-today (:date %))
+                (ud/is-date-before (:date %))) tasks)))
 
 (rf/reg-sub
  ::tasks-soon

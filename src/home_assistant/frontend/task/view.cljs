@@ -6,9 +6,16 @@
             [home-assistant.frontend.util.date :as ud]))
 
 (defn- status
-  [{:keys [checked]}]
-  (if (= checked 1)
+  [{:keys [checked date]}]
+  (cond
+    (and (ud/is-date-before date)
+         (= checked 0))
+     "miss"
+
+    (= checked 1)
     "done"
+    
+    (= checked 0)
     "due"))
 
 (defn tasks-view
@@ -17,13 +24,12 @@
          (let [time (when date (js/Date. date))
                time-map (when time (ud/date-to-map time))]
           ^{:key id}
-          [:div
-           [:div
-            {:on-click #(rf/dispatch [::task-events/select-task id])
-             :class (status task)}
+          [:div.task {:class (status task)}
+           [:div.title
+            {:on-click #(rf/dispatch [::task-events/select-task id])}
             summary]
            (when time
-             [:div
+             [:div.datetime
               [:span.date (ud/date-to-string time-map)]
               [:span.time (ud/time-to-string time-map)]])])) tasks))
 

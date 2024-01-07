@@ -9,11 +9,16 @@
 
    [home-assistant.backend.sql.task :as sql-task]))
 
+(def header-cors
+  {"Access-Control-Allow-Origin"  "*"
+   "Access-Control-Allow-Headers" "*"
+   "Access-Control-Allow-Methods" "*"})
 
 (defroutes api-routes
   (GET "/get-tasks" []
     {:status 200
-     :body (sql-task/get-all-tasks)})
+     :body (sql-task/get-all-tasks)
+     :headers header-cors})
   (POST "/auth" req
     (let [params (:params req)
           user (:user params)

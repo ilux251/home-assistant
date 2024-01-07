@@ -35,15 +35,15 @@
           [:h3 "Heute"]
           [:div.current-day
            (map-indexed (fn [idx hours]
-                          (if (= idx 0)
-                            ^{:key (str "weather-today-" idx)}
-                            [:span.current (Math/round (:temperature hours))]
-                            ^{:key (str "weather-today-" idx)}
-                            [:span (Math/round (:temperature hours))])) weather-data-hourly)]]
+                          ^{:key (str "weather-today-" idx)}
+                          [:div {:class (str "weather-code-" (:weathercode hours))}
+                           (if (= idx 0)
+                             [:span.current (Math/round (:temperature hours))]
+                             [:span (Math/round (:temperature hours))])]) weather-data-hourly)]]
          [:div.days
           (map (fn [day]
                  ^{:key (str "weather-days-" day)}
-                 [:div
+                 [:div {:class (str "weather-code-" (:weathercode day))}
                   [:span.day (:weekday day)]
                   [:div.tempature
                    [:span.min (Math/round (:temperature-min day))]

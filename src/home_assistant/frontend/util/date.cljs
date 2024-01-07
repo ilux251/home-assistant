@@ -54,7 +54,7 @@
 (defn get-date
   [date]
   (js/Date. (str (.getFullYear date) "-" 
-                 (set-zero-if-needed (.getMonth date)) "-" 
+                 (set-zero-if-needed (+ (.getMonth date) 1)) "-" 
                  (set-zero-if-needed (.getDate date)))))
 
 (defn is-date-today
@@ -62,6 +62,12 @@
   (let [date-today-a (get-date (js/Date.))
         date-today-b (get-date (js/Date. date))]
     (= date-today-a date-today-b)))
+
+(defn is-date-before
+  [date]
+  (let [date-today-a (get-date (js/Date.))
+        date-today-b (get-date (js/Date. date))]
+    (> date-today-a date-today-b)))
 
 (defn time-to-string
   [time]

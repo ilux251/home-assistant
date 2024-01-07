@@ -9,7 +9,10 @@
   []
   (let [statement (sf/format
                    {:select [:*]
-                    :from [:task]})]
+                    :from [:task]
+                    :where [:or 
+                            [:>= [:date :date] [:date [:now]]]
+                            [:= :checked 0]]})]
     (j/query db statement)))
 
 (defn create-task

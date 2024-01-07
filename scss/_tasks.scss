@@ -1,0 +1,81 @@
+.tasks
+{
+  margin-left: 40px;
+  margin-right: 40px;
+  width: calc(100% - 300px - 100px); // sidebar 300px margin 100px
+}
+
+.task-container
+{
+  padding: 20px;
+  background-color: rgba($color: #000, $alpha: 1);
+  color: #fff;
+  border-radius: 8px;
+  margin-top: 40px;
+  max-height: calc(50vh - 100px);
+  height: calc(50vh - 100px);
+  
+  h3
+  {
+    margin-top: 0px;
+    font-size: 0.9em;
+    text-transform: uppercase;
+  }
+
+  .task
+  {
+    width: 100%;
+    position: relative;
+    margin-left: 20px;
+    margin-top: 10px;
+
+    &::before
+    {
+      content: "";
+      display: block;
+      position: absolute;
+      left: -20px;
+      top: 5px;
+      width: 12px;
+      height: 12px;
+      background-color: #fff;
+      border-radius: 50% 50%;
+    }
+
+    &.done
+    {
+      color: greenyellow;
+
+      &::before
+      {
+        background-color: greenyellow;
+      }
+    }
+
+    &.miss 
+    {
+      color: red;
+
+      &::before
+      {
+        background-color: red;
+      }
+    }
+  }
+
+  .title
+  {
+    font-size: 1.2em;
+  }
+
+  .datetime 
+  {
+    font-size: 0.75em;
+    color: #8e8e8e;
+
+    .date
+    {
+      margin-right: 7px;
+    }
+  }
+}

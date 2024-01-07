@@ -21,7 +21,7 @@
   []
   (let [tasks @(rf/subscribe [::task-subs/tasks-today])
         tasks-without-subtask (without-subtasks tasks)]
-    [:div.tasks-today 
+    [:div.tasks-today.task-container
      [:h3 "Heute"]
      [dashboard-task-view tasks-without-subtask]]))
 
@@ -29,7 +29,7 @@
   []
   (let [tasks @(rf/subscribe [::task-subs/tasks-soon])
         tasks-without-subtask (without-subtasks tasks)]
-    [:div.tasks-soon 
+    [:div.tasks-soon.task-container
      [:h3 "Später"]
      [dashboard-task-view tasks-without-subtask]]))
 

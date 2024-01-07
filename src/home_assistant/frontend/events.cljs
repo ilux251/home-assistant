@@ -32,7 +32,7 @@
  ::get-tasks
  (fn [_ _]
    {:http-xhrio {:method :get
-                 :uri "http://localhost:8000/get-tasks"
+                 :uri "http://v2202401214473251973.ultrasrv.de/get-tasks"
                  :timeout 5000
                  :format (ajax/json-request-format)
                  :response-format (ajax/json-response-format {:keywords? true})
@@ -43,7 +43,7 @@
  ::auth
  (fn [{:keys [db]} _]
    {:http-xhrio {:method :post
-                 :uri "http://localhost:8000/auth"
+                 :uri "http://v2202401214473251973.ultrasrv.de/auth"
                  :params {:user "user" :password "password"}
                  :timeout 5000
                  :format (ajax/json-request-format)
