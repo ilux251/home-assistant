@@ -4,7 +4,8 @@
    [home-assistant.frontend.subs :as subs]
    [home-assistant.frontend.task.view :as task-view]
    [home-assistant.frontend.sidebar.view :as sidebar-view]
-   [home-assistant.frontend.task.subs :as task-subs]))
+   [home-assistant.frontend.task.subs :as task-subs]
+   [home-assistant.frontend.devices.view :as devices-view]))
 
 (defn- without-subtasks
   [tasks]
@@ -45,4 +46,5 @@
      [sidebar-view/view]
      (case @current-view
        :dashboard [dashboard]
-       :task [task-view/view])]))
+       :task [task-view/view]
+       :devices [devices-view/view])]))

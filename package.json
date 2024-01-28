@@ -11,6 +11,7 @@
 		"watch": "npx shadow-cljs watch app browser-test karma-test",
 		"release": "npx shadow-cljs release app",
 		"build-report": "npx shadow-cljs run shadow.cljs.build-report app target/build-report.html",
+    "sass": "sass scss:resources/public/css",
 		"sass-watch": "sass --watch scss:resources/public/css",
 		"electron": "electron .",
     "electron-build": "electron-builder build -l",

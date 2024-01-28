@@ -11,7 +11,7 @@
                  [org.clojure/tools.namespace "1.3.0"]
                  [org.clojure/java.jdbc "0.7.12"]
                  [honeysql/honeysql "1.0.461"]
-                 [mysql/mysql-connector-java "5.1.6"]
+                 [mysql/mysql-connector-java "8.0.33"]
                  
                  
                  ;; Clojurescript deps

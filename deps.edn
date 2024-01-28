@@ -6,7 +6,7 @@
         org.clojure/tools.namespace {:mvn/version "1.3.0"}
         org.clojure/java.jdbc {:mvn/version "0.7.12"}
         honeysql/honeysql {:mvn/version "1.0.461"}
-        mysql/mysql-connector-java {:mvn/version "5.1.6"}
+        mysql/mysql-connector-java {:mvn/version "8.0.30"}
 
         
         ;; Clojurescript deps
@@ -15,6 +15,7 @@
         binaryage/devtools {:mvn/version "1.0.6"}
         day8.re-frame/http-fx {:mvn/version "0.2.4"}
         cljs-ajax/cljs-ajax {:mvn/version "0.8.4"}}
- :aliases {:run {:exec-fn home-assistant.backend.core/-dev-main}
+ :aliases {:run {:exec-fn home-assistant.backend.core/-main
+                 :main-opts ["-m" "home-assistant.backend.core"]}
            :cljs {:extra-deps {thheller/shadow-cljs {:mvn/version "2.20.7"}}}
            }}
