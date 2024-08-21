@@ -1,7 +1,7 @@
 (ns home-assistant.backend.handler
   (:require
    [ring.middleware.resource :refer [wrap-resource]]
-   [ring.util.response :refer [resource-response]]
+   [ring.util.response :refer [resource-response response]]
    [compojure.core :refer [defroutes GET POST routes]]
    [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
    [ring.middleware.json :refer [wrap-json-response wrap-json-params]]
@@ -15,9 +15,11 @@
    [home-assistant.backend.sql.task :as sql-task]))
 
 (def users {"root" {:username "root"
-                    :password (creds/hash-bcrypt "root_password")}
-            "jane" {:username "jane"
-                    :password (creds/hash-bcrypt "user_password")}})
+                    :password (creds/hash-bcrypt "root_password")
+                    :role #{::admin}}
+            "alex" {:username "alex"
+                    :password (creds/hash-bcrypt "user_password")
+                    :role #{::user}}})
 
 (def header-cors
   {"Access-Control-Allow-Origin"  "*"
@@ -49,21 +51,32 @@
   (GET "/" []
     (resource-response "public/index.html")))
 
-(defn wrap-debug [handler]
+(defn wrap-unauthrized 
+  [handler]
+  (fn [request]
+    (let [params (:params request)
+          user (:user params) 
+          password (:password params)]
+      (if (or (friend/current-authentication request)
+              (creds/bcrypt-credential-fn users {:username user :password password}))
+        (handler request)
+
+        {:status 401
+         :body {:message "Unauthorized access"}}))))
+
+(defn wrap-debug
+  [handler]
   (fn [request]
     (println "Request:" request)
     (let [response (handler request)]
       (println "Response:" response)
       response)))
 
-(defn wrap-unauthrized [handler]
-  (fn [request]
-    (if (friend/current-authentication request)
-      (handler request)
-
-      (-> (handler request)
-          (merge {:status 401
-                  :body {:message "Unauthorized access"}})))))
+(defn unauthorized-handler 
+  [_]
+  {:status 401
+   :headers header-cors
+   :body {:message "Unauthorized"}})
 
 (def app
   (routes
@@ -73,7 +86,8 @@
        (wrap-unauthrized)
        (wrap-session {:store (cookie-store {:max-age 5})})
        (friend/authenticate {:credential-fn (partial creds/bcrypt-credential-fn users)
-                             :workflows [(workflows/interactive-form)]})
+                             :workflows [(workflows/interactive-form)]
+                             :unauthorized-handler unauthorized-handler})
        (wrap-defaults api-defaults)
        (wrap-params)
        (wrap-json-params)
