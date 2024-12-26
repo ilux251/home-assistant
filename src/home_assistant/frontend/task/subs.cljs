@@ -33,6 +33,6 @@
  :<- [::selected-taskid]
  (fn [[tasks selected-taskid] _]
    (let [selected-task (first (filter #(= (:id %) selected-taskid) tasks))
-         subtasks (filter #(= (:subtaskid %) selected-taskid) tasks)]
+         subtasks (filter #(= (:subtask %) selected-taskid) tasks)]
      {:selected-task selected-task
       :subtasks subtasks})))

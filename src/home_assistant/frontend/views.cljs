@@ -9,7 +9,7 @@
 
 (defn- without-subtasks
   [tasks]
-  (filter #(nil? (:subtaskid %)) tasks))
+  (filter #(nil? (:subtask %)) tasks))
 
 (defn- dashboard-task-view
   [tasks]

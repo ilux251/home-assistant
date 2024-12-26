@@ -15,6 +15,9 @@
 * MySQL Server wird benötigt.
   * Konfiguration unter ``backend/sql/db.clj``
 
+### Datenbank
+* MySQL Version: `mysql from 11.6.2-MariaDB`
+* Mit dem Skript `create.sql` kann man initial die Datenbank mit den Tabellen und den Nutzern erstellen lassen.
 
 ## Release
 JAR erstellen
